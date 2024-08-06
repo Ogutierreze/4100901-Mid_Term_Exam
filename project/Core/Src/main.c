@@ -50,10 +50,13 @@ UART_HandleTypeDef huart2;
 /* USER CODE BEGIN PV */
 uint16_t counter_left=0;
 uint16_t counter_right=0;
-uint16_t last_debounce_time_left=0;
-uint16_t last_debounce_time_right=0;
+static uint16_t last_debounce_time_left=0;
+static uint16_t last_debounce_time_right=0;
 uint16_t counter2_left=0;
 uint16_t counter2_right=0;
+uint16_t counter22_right=0;
+uint16_t counter22_left=0;
+
 
 
 /* USER CODE END PV */
@@ -92,7 +95,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 		     }else if(counter_left==2){
 		        	HAL_UART_Transmit(&huart2, (uint8_t *)"Left_activate_second\r\n", 22, 10);
-		        	counter2_left=1;
+		        	counter22_left=1;
 
 		        	counter_left=0;
 
@@ -121,7 +124,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 		     }else if(counter_right==2){
 		        	HAL_UART_Transmit(&huart2, (uint8_t *)"Right_activate_second\r\n", 23, 10);
-		        	counter2_right=1;
+		        	counter22_right=1;
 
 		        	counter_right=0;
 
@@ -179,6 +182,50 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+  	  if(counter2_left!=0){
+
+  		  for(uint8_t i = 0; i<6 ; i++){
+  			  HAL_GPIO_TogglePin(LED_LEFT_GPIO_Port,LED_LEFT_Pin);
+  			  HAL_Delay(250);
+
+  		  }
+  		counter2_left=0;
+
+
+  	  }else if(counter22_left!=0){
+
+		  for(uint8_t i = 0; i<9999999999 ; i++){
+			  HAL_GPIO_TogglePin(LED_LEFT_GPIO_Port,LED_LEFT_Pin);
+			  HAL_Delay(250);
+
+		  }
+		counter22_left=0;
+		counter_left = 0;
+
+		}
+
+  	  if(counter2_right!=0){
+
+  		  for(uint8_t i = 0; i<6 ; i++){
+  			  HAL_GPIO_TogglePin(LED_RIGHT_GPIO_Port,LED_RIGHT_Pin);
+  			  HAL_Delay(250);
+
+  		  }
+  		counter2_right=0;
+
+
+  	  }else if(counter22_right!=0){
+
+		  for(uint8_t i = 0; i<9999999999 ; i++){
+			  HAL_GPIO_TogglePin(LED_RIGHT_GPIO_Port,LED_RIGHT_Pin);
+			  HAL_Delay(250);
+
+		  }
+		counter22_right=0;
+		counter_right = 0;
+
+		}
+
 
 
     /* USER CODE BEGIN 3 */
