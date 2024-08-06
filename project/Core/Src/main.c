@@ -52,6 +52,9 @@ uint16_t counter_left=0;
 uint16_t counter_right=0;
 uint16_t last_debounce_time_left=0;
 uint16_t last_debounce_time_right=0;
+uint16_t counter2_left=0;
+uint16_t counter2_right=0;
+
 
 /* USER CODE END PV */
 
@@ -82,20 +85,51 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		     last_debounce_time_left = current_time;
 		     counter_left++;
 
+		     if(counter_left==1){
+		    	 counter2_left=1;
+		    	 HAL_UART_Transmit(&huart2, (uint8_t *)"Left_activate_First\r\n", 21, 10);
+
+
+		     }else if(counter_left==2){
+		        	HAL_UART_Transmit(&huart2, (uint8_t *)"Left_activate_second\r\n", 22, 10);
+		        	counter2_left=1;
+
+		        	counter_left=0;
+
+
+
+		        }
+
 
 
 		}
 
 
   }  else if(GPIO_Pin==BUTTON_RIGHT_Pin){
-		if (current_time - last_debounce_right >= DEBOUNCE_TIME) {
+		if (current_time - last_debounce_time_right >= DEBOUNCE_TIME) {
 
 		    if (current_time - last_debounce_time_right > 500 && counter_right < 2) {
-		    	counter_left = 0;
+		    	counter_right = 0;
 		    }
 
 		     last_debounce_time_right = current_time;
 		     counter_right++;
+
+		     if(counter_right==1){
+		    	 counter2_right=1;
+		    	 HAL_UART_Transmit(&huart2, (uint8_t *)"Right_activate_First\r\n", 22, 10);
+
+		     }else if(counter_right==2){
+		        	HAL_UART_Transmit(&huart2, (uint8_t *)"Right_activate_second\r\n", 23, 10);
+		        	counter2_right=1;
+
+		        	counter_right=0;
+
+
+
+		        }
+
+
 
 
 		}
@@ -145,6 +179,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
+
 
     /* USER CODE BEGIN 3 */
   }
