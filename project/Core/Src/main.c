@@ -88,6 +88,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		     last_debounce_time_left = current_time;
 		     counter_left++;
 
+		     if(counter_right!=0){
+
+		    	 counter_right=0;
+		     }
+
 		     if(counter_left==1){
 		    	 counter2_left=1;
 		    	 HAL_UART_Transmit(&huart2, (uint8_t *)"Left_activate_First\r\n", 21, 10);
@@ -118,6 +123,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		     last_debounce_time_right = current_time;
 		     counter_right++;
 
+		     if(counter_left!=0){
+
+		    	 counter_left=0;
+		     }
+
+
 		     if(counter_right==1){
 		    	 counter2_right=1;
 		    	 HAL_UART_Transmit(&huart2, (uint8_t *)"Right_activate_First\r\n", 22, 10);
@@ -127,6 +138,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		        	counter22_right=1;
 
 		        	counter_right=0;
+
 
 
 
@@ -194,6 +206,7 @@ int main(void)
 
   	  }else if(counter22_left!=0){
 
+
 		  for(uint8_t i = 0; i<9999999999 ; i++){
 			  HAL_GPIO_TogglePin(LED_LEFT_GPIO_Port,LED_LEFT_Pin);
 			  HAL_Delay(250);
@@ -206,6 +219,9 @@ int main(void)
 
   	  if(counter2_right!=0){
 
+
+
+
   		  for(uint8_t i = 0; i<6 ; i++){
   			  HAL_GPIO_TogglePin(LED_RIGHT_GPIO_Port,LED_RIGHT_Pin);
   			  HAL_Delay(250);
@@ -215,6 +231,8 @@ int main(void)
 
 
   	  }else if(counter22_right!=0){
+
+
 
 		  for(uint8_t i = 0; i<9999999999 ; i++){
 			  HAL_GPIO_TogglePin(LED_RIGHT_GPIO_Port,LED_RIGHT_Pin);
