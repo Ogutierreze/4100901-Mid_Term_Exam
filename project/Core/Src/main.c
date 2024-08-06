@@ -32,6 +32,10 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
+uint16_t counter_left=0;
+uint16_t counter_right=0;
+
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -56,6 +60,20 @@ static void MX_USART2_UART_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(GPIO_Pin);
+  if(GPIO_Pin==BUTTON_LEFT_Pin){
+
+
+  } else if(GPIO_Pin==BUTTON_LEFT_Pin){
+
+
+  }
+
+
+}
 
 /* USER CODE END 0 */
 
