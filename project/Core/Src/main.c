@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#define DEBOUNCE_TIME 100
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -32,8 +33,7 @@
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 
-uint16_t counter_left=0;
-uint16_t counter_right=0;
+
 
 
 /* USER CODE END PD */
@@ -46,7 +46,12 @@ uint16_t counter_right=0;
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
+
 /* USER CODE BEGIN PV */
+uint16_t counter_left=0;
+uint16_t counter_right=0;
+uint16_t last_debounce_time_left=0;
+uint16_t last_debounce_time_right=0;
 
 /* USER CODE END PV */
 
@@ -64,13 +69,38 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   /* Prevent unused argument(s) compilation warning */
   UNUSED(GPIO_Pin);
+
+  uint16_t current_time= HAL_GetTick();
+
   if(GPIO_Pin==BUTTON_LEFT_Pin){
+		if (current_time - last_debounce_time_left >= DEBOUNCE_TIME) {
+
+		    if (current_time - last_debounce_time_left > 500 && counter_left < 2) {
+		    	counter_left = 0;
+		    }
+
+		     last_debounce_time_left = current_time;
+		     counter_left++;
 
 
-  } else if(GPIO_Pin==BUTTON_LEFT_Pin){
+
+		}
 
 
+  }  else if(GPIO_Pin==BUTTON_RIGHT_Pin){
+		if (current_time - last_debounce_right >= DEBOUNCE_TIME) {
+
+		    if (current_time - last_debounce_time_right > 500 && counter_right < 2) {
+		    	counter_left = 0;
+		    }
+
+		     last_debounce_time_right = current_time;
+		     counter_right++;
+
+
+		}
   }
+
 
 
 }
